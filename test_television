@@ -1,0 +1,76 @@
+from THINGNSF import Television
+
+def test_init():
+    TV = Television()
+    assert TV._status == False
+    assert TV._volume == TV.MIN_VOLUME
+    assert TV._channel == TV.MIN_CHANNEL
+    assert TV._muted == False
+
+def test_power():
+    TV = Television()
+    TV.power()
+    assert TV._status == True
+    TV.power()
+    assert TV._status == False
+
+def test_muted():
+    TV = Television()
+    TV.power()
+    TV._volume = 1
+    TV.mute()
+    assert TV._muted == True
+    assert TV._volume == 0
+
+    TV.mute()
+    assert TV._muted == False
+    assert TV._volume == 1
+
+def test_channel_down():
+    TV=Television()
+    TV.power()
+    TV.channel_down()
+    assert TV._channel == 3 and TV._channel == TV.MAX_CHANNEL
+
+    TV.channel_down()
+    assert TV._channel == 2 and TV._channel == TV.MAX_CHANNEL -1
+
+def test_channel_up():
+    TV = Television()
+    TV.power()
+    TV.channel_up()
+    assert TV._channel == 1 and TV._channel == TV.MIN_CHANNEL + 1
+
+    TV.channel_up()
+    assert TV._channel == 2 and TV._channel == TV.MIN_CHANNEL + 2
+
+    TV._channel = TV.MAX_CHANNEL
+    TV.channel_up()
+    assert TV._channel == 0 and TV._channel == TV.MIN_CHANNEL
+
+def test_volume_up():
+    TV=Television()
+    TV.power()
+    TV.volume_up()
+    assert TV._volume == 1
+
+    TV.volume_up()
+    assert TV._volume == TV.MAX_VOLUME
+    TV.volume_up()
+    assert TV._volume == TV.MAX_VOLUME
+
+
+def test_volume_down():
+    TV = Television()
+    TV.power()
+    TV.volume_down()
+    assert TV._volume == TV.MIN_VOLUME
+
+    TV._volume = 2
+    TV.volume_down()
+    assert TV._volume == 1
+
+def test_str():
+    tv = Television()
+    tv.power()
+    assert str(tv) == "Power - [True], Channel - [0], Volume - [0]."
